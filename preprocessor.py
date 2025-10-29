@@ -1,12 +1,21 @@
 import re
 import pandas as pd
+from datetime import datetime
 
+def try_parse_date(date_str):
+    for fmt in ("%d/%m/%y, %H:%M - ", "%m/%d/%y, %H:%M - "):
+        try:
+            return datetime.strptime(date_str, fmt)
+        except ValueError:
+            continue
+    return pd.NaT
+    
 def preprocess(data):
     pattern = '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
     messages = re.split(pattern, data)[1:]
     dates = re.findall(pattern, data)
     df = pd.DataFrame({"user_messages": messages, "message_date": dates})
-    df["message_date"] = pd.to_datetime(df["message_date"], format="%m/%d/%y, %H:%M - ")
+    df["message_date"] = df["message_date"].apply(try_parse_date)
     df.rename(columns={"message_date": "date"}, inplace=True)
     
     users = []
@@ -44,5 +53,6 @@ def preprocess(data):
             period.append(str(hour) + "-" + str(hour + 1))
 
     df['period'] = period
+
 
     return df
