@@ -2,7 +2,6 @@ streamlit
 matplotlib
 seaborn
 urlextract
-re
 pandas
 collections
 emoji
