@@ -56,13 +56,17 @@ if uploaded_file is not None:
 
     # Most common words
     most_common_df = helper.most_common_words(selected_user, df)
-    st.dataframe(most_common_df)
 
-    fig, ax = plt.subplots()
-    ax.bar(most_common_df.iloc[:,0], most_common_df.iloc[:,1], color="orange")
-    plt.xticks(rotation=90)
     st.title("Most Common Words")
-    st.pyplot(fig)
+
+    if most_common_df.shape[1] >= 2 and not most_common_df.empty:
+        st.dataframe(most_common_df)
+        fig, ax = plt.subplots()
+        ax.bar(most_common_df.iloc[:,0], most_common_df.iloc[:,1], color="orange")
+        plt.xticks(rotation=90)
+        st.pyplot(fig)
+    else:
+        st.write("No common words found in this chat.")
     
     # Emoji analysis
     emoji_df = helper.emoji_helper(selected_user, df)
