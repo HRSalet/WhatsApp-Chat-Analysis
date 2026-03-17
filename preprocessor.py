@@ -16,6 +16,7 @@ def preprocess(data):
     dates = re.findall(pattern, data)
     df = pd.DataFrame({"user_messages": messages, "message_date": dates})
     df["message_date"] = df["message_date"].apply(try_parse_date)
+    df["message_date"] = pd.to_datetime(df["message_date"], errors="coerce")
     df.rename(columns={"message_date": "date"}, inplace=True)
     
     users = []
