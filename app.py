@@ -59,7 +59,7 @@ if uploaded_file is not None:
     st.dataframe(most_common_df)
 
     fig, ax = plt.subplots()
-    ax.bar(most_common_df[0],most_common_df[1],color="orange")
+    ax.bar(most_common_df.iloc[:,0], most_common_df.iloc[:,1], color="orange")
     plt.xticks(rotation=90)
     st.title("Most Common Words")
     st.pyplot(fig)
